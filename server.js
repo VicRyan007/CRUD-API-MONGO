@@ -1,7 +1,7 @@
 /**
  * Arquivo: server.js
  * Descrição: Responsável pelo funcionamento do servidor 
- * Autor: Ryan 
+ * Autor: Ryan, Gabriel Aquino e Alfredo
  */
 
 //Chamadas de pacotes
@@ -9,7 +9,7 @@ const express = require('express')
 const app = express()
 const bodyparser = require("body-parser")
 const mongoose = require('mongoose')
-const Produto = require('./app/models/product')
+const Aluno = require('./app/models/aluno')
 const { Router } = require('express')
 
 //URI do mongodb
@@ -48,84 +48,84 @@ app.use('/api', router)
 //API´s:
 //==============================================
 
-//Rotas que terminarem com '/produtos' (servir: GET ALL & POST)
-router.route('/produtos')
- /* 1) Método: Criar Produto (acessar em: POST http://localhost:8000/api/produtos)  */
+//Rotas que terminarem com '/alunos' (servir: GET ALL & POST)
+router.route('/alunos')
+ /* 1) Método: Criar Aluno (acessar em: POST http://localhost:8000/api/alunos)  */
  .post(function(req, res) {
-    var produto = new Produto();
+    var aluno = new Aluno();
 
-    //Aqui vamos setar os campos do produto (via request):
-    produto.nome = req.body.nome;
-    produto.preco = req.body.preco;
-    produto.descricao = req.body.descricao;
+    //Aqui vamos setar os campos do aluno (via request):
+    aluno.nome = req.body.nome;
+    aluno.matricula = req.body.matricula;
+    aluno.descricao = req.body.descricao;
 
-    produto.save(function(error) {
+    aluno.save(function(error) {
         if(error)
-            res.send('Erro ao tentar salvar o Produto....: ' + error);
+            res.send('Erro ao tentar salvar o Aluno....: ' + error);
         
-        res.json({ message: 'Produto Cadastrado com Sucesso!' });
+        res.json({ message: 'Aluno Cadastrado com Sucesso!' });
     });
 })
 
-/* 2) Método: Selecionar Todos Produtos (acessar em: GET http://localhost:8000/api/produtos)  */
+/* 2) Método: Selecionar Todos Alunos (acessar em: GET http://localhost:8000/api/alunos)  */
 .get(function(req, res) {
-    Produto.find(function(error, produtos) {
+    Aluno.find(function(error, alunos) {
         if(error) 
-            res.send('Erro ao tentar Selecionar Todos os produtos...: ' + error);
+            res.send('Erro ao tentar Selecionar Todos os alunos...: ' + error);
 
-        res.json(produtos);
+        res.json(alunos);
     });
 });
 
-//Rotas que irão terminar em '/produtos/:produto_id' (servir tanto para: GET, PUT & DELETE: id):
-router.route('/produtos/:produto_id')
+//Rotas que irão terminar em '/alunos/:aluno_id' (servir tanto para: GET, PUT & DELETE: id):
+router.route('/alunos/:aluno_id')
 
-/* 3) Método: Selecionar por Id: (acessar em: GET http://localhost:8000/api/produtos/:produto_id) */
+/* 3) Método: Selecionar por Id: (acessar em: GET http://localhost:8000/api/alunos/:aluno_id) */
 .get(function (req, res) {
     
-    //Função para poder Selecionar um determinado produto por ID - irá verificar se caso não encontrar um detemrinado
-    //produto pelo id... retorna uma mensagem de error:
-    Produto.findById(req.params.produto_id, function(error, produto) {
+    //Função para poder Selecionar um determinado aluno por ID - irá verificar se caso não encontrar um detemrinado
+    //aluno pelo id... retorna uma mensagem de error:
+    Aluno.findById(req.params.aluno_id, function(error, aluno) {
         if(error)
-            res.send('Id do Produto não encontrado....: ' + error);
+            res.send('Id do Aluno não encontrado....: ' + error);
 
-        res.json(produto);
+        res.json(aluno);
     });
 })
 
-/* 4) Método: Atualizar por Id: (acessar em: PUT http://localhost:8000/api/produtos/:produto_id) */
+/* 4) Método: Atualizar por Id: (acessar em: PUT http://localhost:8000/api/alunos/:aluno_id) */
 .put(function(req, res) {
 
-    //Primeiro: para atualizarmos, precisamos primeiro achar 'Id' do 'Produto':
-    Produto.findById(req.params.produto_id, function(error, produto) {
+    //Primeiro: para atualizarmos, precisamos primeiro achar 'Id' do 'Aluno':
+    Aluno.findById(req.params.aluno_id, function(error, aluno) {
         if (error) 
-            res.send("Id do Produto não encontrado....: " + error);
+            res.send("Id do Aluno não encontrado....: " + error);
 
             //Segundo: 
-            produto.nome = req.body.nome;
-            produto.preco = req.body.preco;
-            produto.descricao = req.body.descricao;
+            aluno.nome = req.body.nome;
+            aluno.matricula = req.body.matricula;
+            aluno.descricao = req.body.descricao;
 
             //Terceiro: Agora que já atualizamos os dados, vamos salvar as propriedades:
-            produto.save(function(error) {
+            aluno.save(function(error) {
                 if(error)
-                    res.send('Erro ao atualizar o produto....: ' + error);
+                    res.send('Erro ao atualizar o aluno....: ' + error);
 
-                res.json({ message: 'Produto atualizado com sucesso!' });
+                res.json({ message: 'Aluno atualizado com sucesso!' });
             });
         });
     })
 
-    /* 5) Método: Excluir por Id (acessar: http://localhost:8000/api/produtos/:produto_id) */
+    /* 5) Método: Excluir por Id (acessar: http://localhost:8000/api/alunos/:aluno_id) */
     .delete(function(req, res) {
         
-        Produto.remove({
-            _id: req.params.produto_id
+        Aluno.remove({
+            _id: req.params.aluno_id
             }, function(error) {
                 if (error) 
-                    res.send("Id do Produto não encontrado....: " + error);
+                    res.send("Id do Aluno não encontrado....: " + error);
 
-                res.json({ message: 'Produto Excluído com Sucesso!' });
+                res.json({ message: 'Aluno Excluído com Sucesso!' });
             });
         });
 
