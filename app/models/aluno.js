@@ -14,13 +14,18 @@
      * -> Nome: String
      * -> Matricula: number
      * -> Descrição: String
+     * -> turma: 
      * */
 
 
     const AlunoSchema = new mongoose.Schema({
+        id: String,
         nome: String,
         matricula: Number,
-        descricao: String,
+        idade: Number,
+        turma: {
+            nomeTurma: String
+        }
     })
 
     module.exports = mongoose.model('Aluno',AlunoSchema)

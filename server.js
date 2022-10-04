@@ -13,7 +13,7 @@ const Aluno = require('./app/models/aluno')
 const { Router } = require('express')
 
 //URI do mongodb
-mongoose.connect('mongodb://localhost:27017/crud_api_ppo')
+mongoose.connect('mongodb://localhost:27017/crud_rest_mongo')
 
 //Configuração da variável app para usar o body-parser
 app.use(bodyparser.urlencoded({ extended: true }))
@@ -57,7 +57,8 @@ router.route('/alunos')
     //Aqui vamos setar os campos do aluno (via request):
     aluno.nome = req.body.nome;
     aluno.matricula = req.body.matricula;
-    aluno.descricao = req.body.descricao;
+    aluno.idade = req.body.idade;
+    aluno.turma.nomeTurma = req.body.nomeTurma;
 
     aluno.save(function(error) {
         if(error)
@@ -104,7 +105,8 @@ router.route('/alunos/:aluno_id')
             //Segundo: 
             aluno.nome = req.body.nome;
             aluno.matricula = req.body.matricula;
-            aluno.descricao = req.body.descricao;
+            aluno.idade = req.body.idade;
+            aluno.turma.nomeTurma = req.body.nomeTurma;
 
             //Terceiro: Agora que já atualizamos os dados, vamos salvar as propriedades:
             aluno.save(function(error) {
