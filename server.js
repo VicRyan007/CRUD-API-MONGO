@@ -10,17 +10,17 @@ const app = express()
 const bodyparser = require("body-parser")
 const mongoose = require('mongoose')
 const Aluno = require('./app/models/aluno')
-const { Router } = require('express')
+const  {Router}  = require('express')
 
 //URI do mongodb
-mongoose.connect('mongodb://localhost:27017/crud_rest_mongo')
+mongoose.connect('mongodb://127.0.0.1:27017/crud_rest_mongo')
 
 //Configuração da variável app para usar o body-parser
 app.use(bodyparser.urlencoded({ extended: true }))
 app.use(bodyparser.json())
 
 //Porta onde será executada a API
-const port = process.env.PORT || 8000;
+const port =  8000;
 
 //===============================
 //Rotas
@@ -102,11 +102,16 @@ router.route('/alunos/:aluno_id')
         if (error) 
             res.send("Id do Aluno não encontrado....: " + error);
 
+            var nomedb = aluno.nome
+            var matriculadb = aluno.matricula
+            var idadedb = aluno.idade
+            var nomeTurma = aluno.turma.nomeTurma
+
             //Segundo: 
-            aluno.nome = req.body.nome;
-            aluno.matricula = req.body.matricula;
-            aluno.idade = req.body.idade;
-            aluno.turma.nomeTurma = req.body.nomeTurma;
+            aluno.nome =  req.body.nome ? req.body.nome : nomedb ;
+            aluno.matricula = req.body.matricula ? req.body.matricula : matriculadb;
+            aluno.idade = req.body.idade ? req.body.idade : idadedb;
+            aluno.turma.nomeTurma = req.body.nomeTurma ? req.body.nomeTurma : nomeTurma;
 
             //Terceiro: Agora que já atualizamos os dados, vamos salvar as propriedades:
             aluno.save(function(error) {
